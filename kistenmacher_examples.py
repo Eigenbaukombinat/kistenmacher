@@ -18,7 +18,7 @@ from kistenmacher import kistenmacher
 #######################################################################
 
 
-## create an instance of kistenmacher and filename
+## create an instance of kistenmacher and set the output filename
 km              = kistenmacher("test.dxf")
 
 
@@ -39,7 +39,7 @@ km              = kistenmacher("test.dxf")
 ##
 if (False):
 
-    ## set parameters
+    ## set parameters for bit diameter and material thickness
     km.bit_diameter = 2
     km.thickness    = 4
 
@@ -52,43 +52,46 @@ if (False):
     #km.drawing.add(dxf.text("100mm / 5 Zinken", (-600,-50), height=10, color='1'))
 
     km.save()
-
     sys.exit(0)
 
 ##
-##  BEISPIEL: KISTE mit STUELPDECKEL
+##  example: box with slip lip
 ##
 if (True):
 
     ## set kistenmacher parameters
     km.thickness    = 4
     km.bit_diameter = 2
+    ## set the number of fingers in each direction
     km.fingers_x   = 3
     km.fingers_y   = 3
     km.fingers_z   = 3
 
-    ## define the size
+    ## define the size of the box
     length      = 60
     width       = 60
     height      = 40
 
-    ## draw the box at given coordinates
+    ## draw the box at given (x,y)-coordinates with given (length/width/height)
     km.drawBoxV1(-400, 0+height+5*km.bit_diameter, length, width, height)
 
-    ## passender Deckel zur Kiste mit leichtem Uebermasz (0.5mm groeszer)
-    ## Achtung: Fingerzinkenzahl in Z-richtung jetzt auf 1 reduziert
-    ##          --> stumpfe Verleimung wg. stark reduzierter Hoehe.
+    ## construct cover lid, slightly larger (by half a millimeter: 0.5mm)
+    ## watch out: only one finger for box joint in z-direction because of reduced height
+    ## remaining parameters stay the same and are not changes
     km.fingers_z = 1
-    km.drawBoxV1(-400, height+length+height+height+8*km.bit_diameter, length + (2 * km.thickness) + 0.5, width + (2 * km.thickness) + 0.5,  float(height)/3 + km.thickness)
+    km.drawBoxV1(-400, height+length+height+height+8*km.bit_diameter,
+                 length + (2 * km.thickness) + 0.5,
+                 width  + (2 * km.thickness) + 0.5,
+                 float(height)/3 + km.thickness)
 
-    km.drawing.add(dxf.text("Kiste mit Stuelpdeckel",  (-450,-30), height=10, color='1'))
+    ## add comments in the DXF
+    km.drawing.add(dxf.text("box with slip lid",       (-450,-30), height=10, color='1'))
     km.drawing.add(dxf.text("(60x60mm / 68.5x68.5mm)", (-450,-50), height=10, color='1'))
 
 
 
-
 ##
-## BEISPIEL: BOX with open top and compartments 3x2
+## BEISPIEL: BOX with open top and compartment divider: 3 by 2 compartments
 ##
 if (True):
 
@@ -112,9 +115,9 @@ if (True):
 
 
 ##
-## BEISPIEL: Stiftehalter
+## BEISPIEL: pen container
 ##
-##    60mm x 60mm, 80mm Hoehe, Unterteilungen: 3x3
+##    60mm x 60mm base size, 80mm height, compartments: 3x3
 ##
 if (True):
     km.thickness    = 4
@@ -139,7 +142,7 @@ if (True):
 
 
 ##
-## BEISPIEL: Grosze Kiste, oben offen
+## BEISPIEL: big box, top stays open
 ##
 if (True):
     km.thickness    = 6
@@ -157,7 +160,7 @@ if (True):
 
 
 ###
-### BEISPIEL: geschlossene Kiste mit Deckel
+### example: closed box with lid
 ###
 if (True):
 
@@ -175,14 +178,9 @@ if (True):
     km.drawing.add(dxf.text("Geschlossene Kiste", (800,-30), height=10, color='1'))
 
 
-
-
 ##
 ## save drawing to dxf and exit
 ##
 km.save()
 sys.exit(0)
-
-
-
 
